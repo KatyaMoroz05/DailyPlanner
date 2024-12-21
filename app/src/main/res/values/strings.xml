@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Daily Planner</string>
+    <string name="schedule">schedule</string>
+    <string name="profile">profile</string>
+    <string name="hintUserName">Username: </string>
+    <string name="hintTheme">Theme: </string>
+    <string name="hintGender">Gender: </string>
+    <string name="hintBirthday">Birthday: </string>
+    <string name="profilePhoto">Profile photo</string>
+    <string name="update">Update</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+</resources>
