@@ -60,14 +60,22 @@ class ProfileFragment : Fragment() {
             {
                 val gender: Int
                 val birthday: LocalDate
+                val db = activity?.applicationContext?.let { DatabaseHelper(it, null) }
 
-                if(editTextGender!!.text.toString() == ("Woman"))
+                if(db == null)
                 {
-                    gender = 0
+                    return@setOnClickListener
                 }
-                else
+                try
                 {
-                    gender = 1
+                    gender = db.selectIdInGendersByGender(editTextGender!!.text.toString())
+                }
+                catch (ex: Exception)
+                {
+                    val toast: Toast = Toast.makeText(activity?.applicationContext,
+                        "Incorrect gender format!", Toast.LENGTH_LONG)
+                    toast.show()
+                    return@setOnClickListener
                 }
 
                 try
@@ -82,11 +90,9 @@ class ProfileFragment : Fragment() {
                     toast.show()
                     return@setOnClickListener
                 }
-
-                val db = activity?.applicationContext?.let { DatabaseHelper(it, null) }
                 if(profileViewModel!!.getUser().value == null)
                 {
-                    db?.addUser(
+                    db.addUser(
                         name = editTextName!!.text.toString(),
                         gender = gender,
                         birthday = birthday
@@ -94,7 +100,7 @@ class ProfileFragment : Fragment() {
                 }
                 else
                 {
-                    db?.updateUser(
+                    db.updateUser(
                         id = profileViewModel!!.getUser().value!!.id,
                         name = editTextName!!.text.toString(),
                         gender = gender,
@@ -102,7 +108,7 @@ class ProfileFragment : Fragment() {
                     )
                 }
 
-                db!!.close()
+                db.close()
                 val toast: Toast = Toast.makeText(activity?.applicationContext,
                     "The data is recorded!", Toast.LENGTH_LONG)
                 toast.show()
@@ -129,8 +135,13 @@ class ProfileFragment : Fragment() {
     private fun updateProfile()
     {
         val db = activity?.applicationContext?.let { DatabaseHelper(it, null) }
-        val cursor = db?.getUsers()
-        if (cursor != null && cursor.moveToFirst())
+        if(db == null)
+        {
+            return
+        }
+
+        val cursor = db.getUsers()
+        if (cursor.moveToFirst())
         {
             val user: User = User(
                 id = cursor.getInt(0),
@@ -155,15 +166,17 @@ class ProfileFragment : Fragment() {
         profileViewModel!!.getUser().observe(viewLifecycleOwner)
         {
             editTextName?.setText(it.name)
-            if(it.gender == 0)
+
+            val gender = db.selectGenderInGendersById(it.gender)
+            editTextGender?.setText(gender)
+
+            if(gender == "Woman")
             {
                 profilePhoto!!.setImageResource(R.drawable.icon_user_woman)
-                editTextGender?.setText("Woman")
             }
             else
             {
                 profilePhoto!!.setImageResource(R.drawable.icon_user_man)
-                editTextGender?.setText("Man")
             }
 
             editTextBirthday?.setText(it.birthday.format(

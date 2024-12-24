@@ -3,7 +3,6 @@ package com.example.dailyplanner.ui.schedule
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -16,16 +15,13 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.dailyplanner.DatabaseHelper
 import com.example.dailyplanner.R
 import com.example.dailyplanner.Schedule
 import com.example.dailyplanner.ScheduleAdapter
-import com.example.dailyplanner.User
 import com.example.dailyplanner.databinding.FragmentScheduleBinding
-import com.google.android.material.textfield.TextInputLayout
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -206,7 +202,7 @@ class ScheduleFragment : Fragment()
             updateListViewSchedule(date)
         }
 
-        /*listViewSchedule!!.setOnItemLongClickListener { parent, view, position, id ->
+        listViewSchedule!!.setOnItemLongClickListener { parent, view, position, id ->
 
             val item = parent.getItemAtPosition(position)
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
@@ -215,7 +211,7 @@ class ScheduleFragment : Fragment()
                 DialogInterface.OnClickListener{
                         dialog,
                         which ->
-                    *//*val date = LocalDate.parse(dateEdt.text,
+                    /*val date = LocalDate.parse(dateEdt.text,
                         DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 
                     val db = activity?.let { DatabaseHelper(it.applicationContext, null) }
@@ -226,13 +222,13 @@ class ScheduleFragment : Fragment()
                             it.date == date }[position]
                         db?.setDeletedScheduleRecord(record.id)
                     }
-                    updateListViewSchedule(date)*//*
+                    updateListViewSchedule(date)*/
                 })
             builder.setNegativeButton("Cancel",
                 DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
             builder.show()
             true
-        }*/
+        }
         return root
     }
 
